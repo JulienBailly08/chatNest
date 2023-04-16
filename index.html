@@ -78,7 +78,11 @@
       });
       message.addEventListener('keyup', function (e) {
         if (e.keyCode == 13 && message.value.length > 0) {
-          socket.emit('message', message.value);
+          let data = {
+            user: pseudo.value,
+            value: message.value,
+          };
+          socket.emit('message', data);
           message.value = '';
         }
       });
@@ -88,8 +92,8 @@
       });
 
       socket.on('message', function (id, data) {
-        messages.innerHTML += `<span class="text-end badge text-bg-success">${pseudo.value}</span>
-<p>${data}</p>`;
+        messages.innerHTML += `<span class="text-end badge text-bg-success">${data.user}</span>
+            <p>${data.value}</p>`;
       });
 
       function validerPseudo() {

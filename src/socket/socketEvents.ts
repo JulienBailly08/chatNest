@@ -6,6 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { MessageInterface } from 'src/model/Message.interface';
 
 @WebSocketGateway({
   cors: {
@@ -28,7 +29,10 @@ export class SocketEvents {
 
   //recevoir un event => s'abonner à un message
   @SubscribeMessage('message')
-  handleEvent(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+  handleEvent(
+    @MessageBody() data: MessageInterface,
+    @ConnectedSocket() client: Socket,
+  ) {
     //envoyer un event
     this.server.emit('message', client.id, data);
   }
